@@ -174,7 +174,7 @@ public class TimeSelectorPopupWidget extends DecoratedPopupPanel implements Circ
         this.visibleMinutes = visibleMinutes;
     }
 
-    private void setHourSelection() {
+    public void setHourSelection() {
         setHours();
         select = Target.HOURS;
     }

@@ -1,9 +1,6 @@
 package org.percepta.mgrankvi.client;
 
-import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.BlurHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
@@ -41,8 +38,20 @@ public class TimeSelectorWidget extends Composite implements SelectionHandler {/
         content.addBlurHandler(new BlurHandler() {
             @Override
             public void onBlur(BlurEvent blurEvent) {
-                String[] timeElements = content.getText().split("\\:");
-                timeSelection(Integer.parseInt(timeElements[0]), Integer.parseInt(timeElements[1]));
+                handleTextInField();
+            }
+        });
+        content.addKeyDownHandler(new KeyDownHandler() {
+            @Override
+            public void onKeyDown(KeyDownEvent keyDownEvent) {
+                boolean enterPressed = KeyCodes.KEY_ENTER == keyDownEvent.getNativeEvent().getKeyCode();
+                boolean escapePressed = KeyCodes.KEY_ESCAPE == keyDownEvent.getNativeEvent().getKeyCode();
+                if (enterPressed) {
+                    handleTextInField();
+                } else if (escapePressed) {
+                    selector.setHourSelection();
+                    selector.hide();
+                }
             }
         });
         selector = new TimeSelectorPopupWidget(this);
@@ -56,6 +65,11 @@ public class TimeSelectorWidget extends Composite implements SelectionHandler {/
 
     public void addSelectionHandler(SelectionHandler selectionHandler) {
         this.selectionHandler = selectionHandler;
+    }
+
+    private void handleTextInField() {
+        String[] timeElements = content.getText().split("\\:");
+        timeSelection(Integer.parseInt(timeElements[0]), Integer.parseInt(timeElements[1]));
     }
 
     @Override
