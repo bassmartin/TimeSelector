@@ -239,6 +239,11 @@ public class TimeSelectorPopupWidget extends DecoratedPopupPanel implements Circ
         } else {
             minuteSelection = timeValue;
             minute.setText(format.format(timeValue % 60));
+
+            // Save the time entered and immediately close the widget
+            selectionHandler.timeSelection(hourSelection, minuteSelection);
+            setHourSelection();
+            hide();
         }
     }
 
