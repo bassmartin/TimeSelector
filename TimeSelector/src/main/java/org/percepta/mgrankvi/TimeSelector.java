@@ -10,13 +10,11 @@ import org.percepta.mgrankvi.client.TimeSelectorState;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.time.LocalTime;
 
 // This is the server-side UI component that provides public API 
 // for MyComponent
-public class TimeSelector extends CustomField<Date> {
+public class TimeSelector extends CustomField<LocalTime> {
 
     int hour = 0;
     int minute = 0;
@@ -26,12 +24,11 @@ public class TimeSelector extends CustomField<Date> {
 
         @Override
         public void valueSelection(int hours, int minutes) {
+            setComponentError(null);
             hour = hours;
             minute = minutes;
-            Calendar cal = GregorianCalendar.getInstance();
-            cal.set(Calendar.HOUR_OF_DAY, hours);
-            cal.set(Calendar.MINUTE, minutes);
-            setValue(cal.getTime());
+            LocalTime localTime = LocalTime.of(hours, minutes);
+            setValue(localTime);
             fireChangeEvent(hours, minutes);
         }
     };
@@ -43,8 +40,8 @@ public class TimeSelector extends CustomField<Date> {
     }
 
     @Override
-    public Class<? extends Date> getType() {
-        return Date.class;
+    public Class<? extends LocalTime> getType() {
+        return LocalTime.class;
     }
 
     @Override
@@ -74,7 +71,7 @@ public class TimeSelector extends CustomField<Date> {
      * @return the selected hour (from 0 to 23)
      */
     public int getHours() {
-        return getValue().getHours();
+        return getValue().getHour();
     }
 
     /**
@@ -83,7 +80,7 @@ public class TimeSelector extends CustomField<Date> {
      * @return the currently selected minute (from 0 to 59)
      */
     public int getMinutes() {
-        return getValue().getMinutes();
+        return getValue().getMinute();
     }
 
     public void setMinuteCaptions(Integer... minuteLabels) {
@@ -105,9 +102,9 @@ public class TimeSelector extends CustomField<Date> {
     }
 
     @Override
-    public void setValue(Date newFieldValue) throws ReadOnlyException, Converter.ConversionException {
+    public void setValue(LocalTime newFieldValue) throws ReadOnlyException, Converter.ConversionException {
         super.setValue(newFieldValue);
-        setTime(newFieldValue.getHours(), newFieldValue.getMinutes());
+        setTime(newFieldValue.getHour(), newFieldValue.getMinute());
     }
 
     private static final Method SELECTION_EVENT;

@@ -1,13 +1,15 @@
 package org.percepta.mgrankvi.client;
 
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TextBox;
 
 public class TimeSelectorWidget extends Composite implements SelectionHandler {//} implements CircleSelectCallback {
 
@@ -15,15 +17,15 @@ public class TimeSelectorWidget extends Composite implements SelectionHandler {/
 
     private SelectionHandler selectionHandler;
 
-    Label content;
+    TextBox content;
 
     TimeSelectorPopupWidget selector;
     private boolean twentyFour = true;
 
     public TimeSelectorWidget() {
 
-        content = new Label("12:00");
-        content.setStyleName("time-label");
+        content = new TextBox();
+        content.setMaxLength(5);
         content.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
@@ -36,13 +38,19 @@ public class TimeSelectorWidget extends Composite implements SelectionHandler {/
                 });
             }
         });
+        content.addBlurHandler(new BlurHandler() {
+            @Override
+            public void onBlur(BlurEvent blurEvent) {
+                String[] timeElements = content.getText().split("\\:");
+                timeSelection(Integer.parseInt(timeElements[0]), Integer.parseInt(timeElements[1]));
+            }
+        });
         selector = new TimeSelectorPopupWidget(this);
         SimplePanel baseContent = new SimplePanel();
         baseContent.add(content);
 //        baseContent.getElement().getStyle().setBackgroundColor("white");
         initWidget(baseContent);
         // CSS class-name should not be v- prefixed
-        baseContent.setStyleName("c-" + CLASS_NAME);
 
     }
 
