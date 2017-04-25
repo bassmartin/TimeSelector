@@ -42,8 +42,6 @@ public class DemoUI extends UI {
             }
         });
 
-        component.setValue(LocalTime.MIDNIGHT);
-
         // Show it in the middle of the screen
         final VerticalLayout contentLayout = new VerticalLayout();
         contentLayout.setStyleName("demoContentLayout");
