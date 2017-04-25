@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.vaadin.client.ui.VTextField;
 
 public class TimeSelectorWidget extends Composite implements SelectionHandler {//} implements CircleSelectCallback {
 
@@ -14,14 +15,14 @@ public class TimeSelectorWidget extends Composite implements SelectionHandler {/
 
     private SelectionHandler selectionHandler;
 
-    TextBox content;
+    VTextField content;
 
     TimeSelectorPopupWidget selector;
     private boolean twentyFour = true;
 
     public TimeSelectorWidget() {
 
-        content = new TextBox();
+        content = new VTextField();
         content.setMaxLength(5);
         content.addClickHandler(new ClickHandler() {
             @Override
